@@ -11,7 +11,6 @@ VESTOBLOG is a blog-style web application for finance, investment, and stock mar
 ## Technologies Used
 - Backend: Flask Framework
 - Frontend: React Framework
-- APIs: **** (To be filled)
 
 ## Features
 - Browse articles and blogs on finance, investment, and stock market.
