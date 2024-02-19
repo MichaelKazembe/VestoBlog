@@ -1,0 +1,22 @@
+/* NavBar.module.css */
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
+
+.NavBar {
+  font-family: 'Roboto', sans-serif;
+  background-color: #f8f9fa;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.navLink {
+    color: #6c757d;
+    font-weight: 300;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+    transition: color 0.3s, background-color 0.3s;
+}
