@@ -7,9 +7,9 @@
 	- Run `virtualenv venv --prompt="(vestoblog) "` (include trailing space) to
 	  create a virtual environment for the project
 	- Run `source venv/bin/activate` to start virtual environment created
-
-	- Run `deactivate` to end virtual environment and return back to your normal
-	  terminal
+	- Continue with other installations and work on project files
+	- Run `deactivate` when you are done working on project files and need to close
+	  the virtual environment to return to your normal terminal
 
 * Install flask and other dependencies
 	- Install pip for python `sudo apt install python3-pip`
