@@ -4,7 +4,7 @@
 
 .NavBar {
   font-family: 'Roboto', sans-serif;
-  background-color: #f8f9fa;
+  background-color: var(--bg-color);
   display: flex;
   justify-content: space-between;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
@@ -12,7 +12,7 @@
 }
 
 .navLink {
-    color: #6c757d;
+    color: var(--primary-color);
     font-weight: 300;
     padding-left: 1.5rem;
     padding-right: 1.5rem;
@@ -23,8 +23,4 @@
     transition: color 0.3s, background-color 0.3s;
 }
 
-.navLink:hover {
-    color: #4e95e7;
-    background-color: #6c757d;
-}
 
