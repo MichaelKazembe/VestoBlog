@@ -1,0 +1,60 @@
+/* Footer.js Styling */
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
+
+:root {
+    --footer-bg_color:  #f8f9fa;
+    --text-color: #333;
+
+}
+footer {
+    background-color: var(--footer-bg_color);
+    color: var(--text-color);
+    padding: 40px 0;
+    margin-top: 50px;
+
+}
+
+footer h5 {
+    color: var(--text-color);
+}
+
+footer ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+footer ul li {
+    margin-bottom: 10px;
+}
+
+footer a {
+    color: var(--text-color);
+    text-decoration: none;
+
+}
+
+footer a:hover {
+    color: #007bff;
+}
+
+p {
+    font-size: medium;
+}
+
+.Hero-section {
+    background-size: cover;
+    background-position: center;
+    background-image: url('../../img/Hero.png');
+    height: 400px;
+    color: white;
+    text-align: start;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+div .Hero-text-box {
+    margin-left: 50px;
+}
