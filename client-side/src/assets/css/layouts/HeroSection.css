@@ -1,0 +1,16 @@
+.Hero-section {
+    background-size: cover;
+    background-position: center;
+    background-image: url('../../img/Hero.jpg');
+    height: 400px;
+    color: Black;
+    text-align: start;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+div .Hero-text-box {
+    margin-left: 50px;
+}

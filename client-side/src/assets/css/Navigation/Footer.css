@@ -42,19 +42,3 @@ p {
     font-size: medium;
 }
 
-.Hero-section {
-    background-size: cover;
-    background-position: center;
-    background-image: url('../../img/Hero.png');
-    height: 400px;
-    color: white;
-    text-align: start;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-}
-
-div .Hero-text-box {
-    margin-left: 50px;
-}

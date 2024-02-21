@@ -1,6 +1,7 @@
 import React from 'react';
 import { Container, Row, Col} from 'react-bootstrap';
 import PrimaryButton from '../common/buttons/PrimaryButton';
+import '../../assets/css/layouts/HeroSection.css';
 
 const HeroSection = () => {
     return (
