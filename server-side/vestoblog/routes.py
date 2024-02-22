@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """ Defines routes and view functions for the vestoblog app """
-from vestoblog import app
+from vestoblog import app, db
 from flask import render_template, request
+from vestoblog.models import User, Post
 
 
 @app.route('/')
