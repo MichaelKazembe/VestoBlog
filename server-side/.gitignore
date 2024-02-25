@@ -4,4 +4,4 @@
 *.swo
 __pycache__
 venv
-.flaskenv
+.env
