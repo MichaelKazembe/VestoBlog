@@ -2,6 +2,7 @@ import React from 'react';
 import { Navbar, Nav, Container } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import PrimaryButton from '../buttons/PrimaryButton';
+import OutlinePrimaryButton from '../buttons/OutlinePrimaryButton';
 import styles from '../../../assets/css/NavBar.module.css';
 
 const NavBar = () => {
@@ -15,19 +16,19 @@ const NavBar = () => {
                 <Nav.Link as={NavLink} to="/" exact ClassName={styles.navLink}>
                 Home
                 </Nav.Link>
+                <Nav.Link as={NavLink} to="/articles" ClassName={styles.navLink}>
+                Articles
+                </Nav.Link>
                 <Nav.Link as={NavLink} to="/about" ClassName={styles.navLink}>
                 About
                 </Nav.Link>
                 <Nav.Link as={NavLink} to="/contact" ClassName={styles.navLink}>
                 Contact
                 </Nav.Link>
-                <Nav.Link as={NavLink} to="/articles" ClassName={styles.navLink}>
-                Articles
-                </Nav.Link>
             </Nav>
             <Nav className="ml-auto">
                 <Nav.Link as={NavLink} to="/login" ClassName={styles.navLink}>
-                Login
+                <OutlinePrimaryButton>Login</OutlinePrimaryButton>
                 </Nav.Link>
                 <Nav.Link as={NavLink} to="/register" ClassName={styles.navLink}>
                 <PrimaryButton>Register</PrimaryButton>
