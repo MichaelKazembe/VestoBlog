@@ -6,7 +6,7 @@ const Footer = () => {
     return (
         <footer className='mt-5'>
             <Container>
-                <Row>
+                <Row className='Rows'>
                     <Col md={6}>
                         <h5>About VestoBlog</h5>
                         <p>VestoBlog is a Blog-style Web Application</p>
@@ -23,7 +23,7 @@ const Footer = () => {
 
                 </Row>
                 <hr />
-                    <p className='Bottom-footer-text'>2024 VESTOBLOG. All rights Reserved</p>
+                    <p className='Bottom-footer-text text-center'>2024 VESTOBLOG. All rights Reserved</p>
             </Container>
 
         </footer>
