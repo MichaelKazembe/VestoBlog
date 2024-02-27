@@ -1,13 +1,14 @@
 import React from 'react';
 import { Navbar, Nav, Container } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
-import styles from '../../assets/css/NavBar.module.css';
+import PrimaryButton from '../buttons/PrimaryButton';
+import styles from '../../../assets/css/NavBar.module.css';
 
 const NavBar = () => {
     return (
         <Navbar bg="light" expand="lg" className={styles.navbar}>
         <Container className={styles.navbarContainer}>
-            <Navbar.Brand as={NavLink} to="/">VestoBlog</Navbar.Brand>
+            <Navbar.Brand as={NavLink} to="/" className='Brand-name'><h4>VestoBlog</h4></Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
@@ -20,8 +21,16 @@ const NavBar = () => {
                 <Nav.Link as={NavLink} to="/contact" ClassName={styles.navLink}>
                 Contact
                 </Nav.Link>
-                <Nav.Link as={NavLink} to="/blog" ClassName={styles.navLink}>
-                Blog
+                <Nav.Link as={NavLink} to="/articles" ClassName={styles.navLink}>
+                Articles
+                </Nav.Link>
+            </Nav>
+            <Nav className="ml-auto">
+                <Nav.Link as={NavLink} to="/login" ClassName={styles.navLink}>
+                Login
+                </Nav.Link>
+                <Nav.Link as={NavLink} to="/register" ClassName={styles.navLink}>
+                <PrimaryButton>Register</PrimaryButton>
                 </Nav.Link>
             </Nav>
             </Navbar.Collapse>
