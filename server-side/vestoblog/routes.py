@@ -78,8 +78,8 @@ def register():
 def login():
     """ Logs in a user account """
 
-    # Checks if a user accessing the route throughg a GET request
-    # is already logged in or not
+    # Checks if a user accessing the route through a GET request
+    # is already logged in
     if verify_jwt_in_request(optional=True):
         return jsonify(msg="Already Logged In")
 
@@ -92,7 +92,7 @@ def login():
 
         user = User.query.filter_by(email=email).first()
         if user and user.check_password_hash(password):
-            response = jsonify({"msg": "Login Successful"})
+            response = jsonify({"msg": "Login successful"})
             access_token = create_access_token(identity=user)
             set_access_cookies(response, access_token)
             return response, 200
@@ -119,7 +119,7 @@ def profile():
 def logout():
     """ Logs out user account """
 
-    response = jsonify({"msg": "logout successful"})
+    response = jsonify({"msg": "Logout successful"})
     unset_jwt_cookies(response)
     return response
 
