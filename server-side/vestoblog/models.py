@@ -2,22 +2,32 @@
 """ Module containing model structre for app's databse information table"""
 from vestoblog import db
 from datetime import datetime
+from werkzeug.security import generate_password_hash as gph
+from werkzeug.security import check_password_hash as cph
 
 
 class User(db.Model):
     """ Model to create table/schema that'll hold a User's information """
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(60), index=True, unique=True, nullable=False)
+    firstname = db.Column(db.String(65), index=True, nullable=False)
+    lastname = db.Column(db.String(65), index=True, nullable=False)
     email = db.Column(db.String(120), index=True, unique=True, nullable=False)
-    password = db.Column(db.String(250), nullable=False)
+    password = db.Column(db.String(250))
     role = db.Column(db.Enum("Admin", 'Regular'), nullable=False,
                      default='Regular')
     posts = db.relationship('Post', backref='author', lazy=True)
 
+    def create_password_hash(self, password):
+        """ Create a hash for the user's password """
+        self.password = gph(password)
+
+    def check_password_hash(self, password):
+        """ Check to confirm password is same as hashed password """
+        return cph(self.password, password)
 
     def __repr__(self):
         return str({
-            "username": f'{self.username}',
+            "firstname": f'{self.firstname}',
             "email": f'{self.email}',
             "role": f'{self.role}',
             "id": f'{self.id}'
@@ -42,7 +52,7 @@ class Post(db.Model):
         return str({
             "title": f'{self.title}',
             "date posted": f'{self.date_posted}',
-            "tag": f'{self.tag}',
+            "category": f'{self.category}',
             "author": f'{self.author.email}',
             "id": f'{self.id}'
         })
