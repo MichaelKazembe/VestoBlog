@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """ Defines routes and view functions for the vestoblog app """
 from vestoblog import app, db, jwt
-from flask import render_template, request, jsonify
+from flask import request, jsonify
 from vestoblog.models import User, Post
 from flask_jwt_extended import create_access_token, set_access_cookies, get_jwt
 from flask_jwt_extended import jwt_required, verify_jwt_in_request, current_user
@@ -26,7 +26,7 @@ def user_lookup_callback(_jwt_header, jwt_data):
 
 @app.after_request
 def refresh_expiring_jwts(response):
-    """ Refresh any token that is within 9 minutes of expiring """
+    """ Refresh any token that is within 10 minutes of expiring """
     try:
         exp_time = get_jwt()["exp"]
         present_time = datetime.utcnow()
@@ -115,7 +115,7 @@ def profile():
     return jsonify(response)
 
 
-@app.route('/logout')
+@app.route('/logout', methods=['POST'])
 def logout():
     """ Logs out user account """
 
@@ -128,6 +128,7 @@ def logout():
 @jwt_required()
 def unregister():
     """ Deletes a user's account from the databse """
+
     user = current_user
     response = jsonify(msg="Account deleted succesfully")
     unset_jwt_cookies(response)
