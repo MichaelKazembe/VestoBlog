@@ -1,12 +1,13 @@
-//SignUp.js
+//Register.js
 import React, { Component } from 'react';
-
+import Container from 'react-bootstrap/Container';
 
 export default class SignUp extends Component {
     render() {
         return (
+            <Container className='p-3 my-5 d-flex flex-column w-50 justify-contents-center'>
             <form>
-                <h3>Sign Up</h3>
+                <h3 className="text-center">Sign Up</h3>
 
                 <div className="mb-3">
                     <label>First name</label>
@@ -41,10 +42,11 @@ export default class SignUp extends Component {
                         Sign Up
                     </button>
                 </div>
-                <p className="forgot-password text-right">
-                    Already registered <a href="/sign-in">sign in?</a>
+                <p className="forgot-password text-right pt-2">
+                    Already registered <a href="/login">login?</a>
                 </p>
             </form>
+            </Container>
         )
     }
 }

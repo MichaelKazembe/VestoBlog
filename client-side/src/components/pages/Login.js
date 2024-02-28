@@ -1,8 +1,10 @@
 //Login.js
 import React, { Component } from "react";
+import Container from "react-bootstrap/Container";
 export default class Login extends Component {
     render() {
         return (
+            <Container className='p-3 my-5 d-flex flex-column w-50 justify-contents-center'>
             <form>
                 <h3>Sign In</h3>
                 <div className="mb-3">
@@ -22,7 +24,7 @@ export default class Login extends Component {
                     />
                 </div>
                 <div className="mb-3">
-                    <div className="custom-control custom-checkbox">
+                    <div className="custom-control custom-checkbox pl-2">
                         <input
                             type="checkbox"
                             className="custom-control-input"
@@ -38,7 +40,7 @@ export default class Login extends Component {
                     Forgot <a href="#">password?</a>
                 </p>
             </form>
+            </Container>
         );
     }
-}
-
+};
