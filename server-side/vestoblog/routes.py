@@ -81,7 +81,7 @@ def login():
     # Checks if a user accessing the route through a GET request
     # is already logged in
     if verify_jwt_in_request(optional=True):
-        return jsonify(msg="Already Logged In")
+        return jsonify(msg="Already logged In"), 200
 
     elif request.method == "POST":
         email = request.form.get("email", None)
@@ -100,7 +100,7 @@ def login():
             return jsonify(msg="Invalid email or password"), 401
 
     else:
-        return jsonify(msg="Enter account email and password to login")
+        return jsonify(msg="Enter account's email and password to login"), 200
 
 
 @app.route('/profile/')
@@ -115,7 +115,22 @@ def profile():
         "role": current_user.role,
         "id": current_user.id
     }
-    return jsonify(response)
+
+    user_posts = current_user.posts
+    posts = []
+    for post in user_posts:
+        posts.append(
+                {
+            "title": post.title,
+            "author": f"{post.author.firstname} {post.author.lastname}",
+            "category": post.category,
+            "date posted": post.date_posted.rsplit(":", maxsplit=1)[0],
+            "content": post.content
+            }
+        )
+    if posts:
+        response["posts"] = posts
+    return jsonify(response), 200
 
 
 @app.route('/logout', methods=['POST'])
@@ -125,7 +140,7 @@ def logout():
 
     response = jsonify({"msg": "Logout successful"})
     unset_jwt_cookies(response)
-    return response
+    return response, 200
 
 
 @app.route('/unregister', methods=["POST"])
@@ -143,7 +158,7 @@ def unregister():
     db.session.delete(user)
     db.session.commit()
 
-    return response
+    return response, 200
 
 @app.route('/article/<string:title>')
 def article(title):
@@ -157,7 +172,7 @@ def article(title):
         "date posted": get_post.date_posted.rsplit(":", maxsplit=1)[0],
         "content": get_post.content
         }
-    return response
+    return response, 200
 
 
 @app.route('/article/add', methods=['POST'])
@@ -183,6 +198,6 @@ def add_article():
     db.session.add(post)
     db.session.commit()
     # Redirect to same route or different route upon success
-    return jsonify(msg="Post added successfully")
+    return jsonify(msg="Post added successfully"), 200
 
 
