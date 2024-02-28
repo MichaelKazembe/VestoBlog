@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-""" Defines routes and view functions for the vestoblog app """
+""" Defines routes and view functions for the vestoblog app API requests"""
 from vestoblog import app, db, jwt
 from flask import request, jsonify
 from vestoblog.models import User, Post
@@ -116,6 +116,7 @@ def profile():
 
 
 @app.route('/logout', methods=['POST'])
+@jwt_required()
 def logout():
     """ Logs out user account """
 
@@ -124,7 +125,7 @@ def logout():
     return response
 
 
-@app.route('/unregister')
+@app.route('/unregister', methods=["POST"])
 @jwt_required()
 def unregister():
     """ Deletes a user's account from the databse """
@@ -136,3 +137,20 @@ def unregister():
     db.session.commit()
 
     return response
+
+@app.route('/article/<string:title>')
+def article(title):
+    """ Sends a Post's information """
+
+    get_post = Post.query.filter_by(title=title).first_or_404()
+    response = {
+        "title": get_post.title,
+        "author": f"{get_post.author.firstname} {get_post.author.lastname}",
+        "category": get_post.category,
+        "date posted": get_post.date_posted.rsplit(":", maxsplit=1)[0],
+        "content": get_post.content
+        }
+    return response
+
+
+
