@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """ Defines routes and view functions for the vestoblog app API requests"""
 from vestoblog import app, db, jwt
-from flask import request, jsonify
+from flask import request, jsonify, abort
 from vestoblog.models import User, Post
 from flask_jwt_extended import create_access_token, set_access_cookies, get_jwt
 from flask_jwt_extended import jwt_required, verify_jwt_in_request, current_user
@@ -99,6 +99,9 @@ def login():
         else:
             return jsonify(msg="Invalid email or password"), 401
 
+    else:
+        return jsonify(msg="Enter account email and password to login")
+
 
 @app.route('/profile/')
 @jwt_required()
@@ -133,6 +136,10 @@ def unregister():
     user = current_user
     response = jsonify(msg="Account deleted succesfully")
     unset_jwt_cookies(response)
+    user_posts = user.posts
+    # Delete User's posts first before deleting user
+    for post in user_posts:
+        db.session.delete(post)
     db.session.delete(user)
     db.session.commit()
 
@@ -152,5 +159,30 @@ def article(title):
         }
     return response
 
+
+@app.route('/article/add', methods=['POST'])
+@jwt_required()
+def add_article():
+    """ Receives information and creates new post in database """
+
+    if current_user.role != "Admin":
+        abort(403)
+
+    title = request.form.get("title", None)
+    content = request.form.get("content", None)
+    category = request.form.get("category", None)
+
+    if not title or not content or not category:
+        return jsonify(msg="No field can be empty"), 401
+
+    if Post.query.filter_by(title=title).one_or_none():
+        return jsonify(msg="The title for this post is already taken"), 400
+
+    post = Post(title=title, content=content, category=category,
+            admin_id=current_user.id)
+    db.session.add(post)
+    db.session.commit()
+    # Redirect to same route or different route upon success
+    return jsonify(msg="Post added successfully")
 
 
