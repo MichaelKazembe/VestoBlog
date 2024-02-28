@@ -87,16 +87,17 @@ def login():
         email = request.form.get("email", None)
         password = request.form.get("password", None)
 
-    if not email or not password:
-        return jsonify(msg="No field can be empty"), 401
+        if not email or not password:
+            return jsonify(msg="No field can be empty"), 401
 
-    user = User.query.filter_by(email=email).first()
-    if user and user.check_password_hash(password):
-        response = jsonify({"msg": "Login successful"})                                                                    access_token = create_access_token(identity=user)
-        set_access_cookies(response, access_token)
-        return response, 200
-    else:
-        return jsonify(msg="Invalid email or password"), 401
+        user = User.query.filter_by(email=email).first()
+        if user and user.check_password_hash(password):
+            response = jsonify({"msg": "Login successful"})
+            access_token = create_access_token(identity=user)
+            set_access_cookies(response, access_token)
+            return response, 200
+        else:
+            return jsonify(msg="Invalid email or password"), 401
 
     else:
         return jsonify(msg="Enter account's email and password to login"), 200
@@ -181,7 +182,7 @@ def add_article():
 
     title = request.form.get("title", None)
     content = request.form.get("content", None)
-    category = request.form.get("category" None)
+    category = request.form.get("category", None)
 
     if not title or not content or not category:
         return jsonify(msg="No field can be empty")
@@ -222,15 +223,15 @@ def search_article(search_string):
     search_results = post_by_title + post_by_category
 
     # If there are no results, return a 404 error
-    if not search_results
-    abort(404, description=f"No articles found for '{search_string}'")
+    if not search_results:
+        abort(404, description=f"No articles found for '{search_string}'")
 
     # Create a response object that contains the search results
     response = {
         "search_string": search_string,
         "results": [
             {
-                title": post.title,
+                "title": post.title,
                 "author": f"{post.author.firstname} {post.author.lastname}",
                 "category": post.category,
                 "date posted": post.date_posted.rsplit(":", maxsplit=1)[0],

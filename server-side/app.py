@@ -10,11 +10,11 @@ def make_shell_context():
     return {'db': db, 'User': User, 'Post': Post}
 
 
-@app.app_context
+""" @app.app_context
 def test_user():
     db.create_all
     db.session.add(new_user)
-    db.session.commit()
+    db.session.commit() """
 
 
 if __name__=="__main__":
