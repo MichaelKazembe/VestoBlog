@@ -201,3 +201,13 @@ def add_article():
     return jsonify(msg="Post added successfully"), 200
 
 
+@app.route('/article/<string:title>/delete', methods=['POST'])
+@jwt_required()
+def delete_article(title):
+    post = Post.query.filter_by(title=title).first_or_404()
+    if post.author != current_user:
+        abort(403)
+    db.session.delete(post)
+    db.session.commit()
+
+    return jsonify(msg="Post deleted successfully"), 200
