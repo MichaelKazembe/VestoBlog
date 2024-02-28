@@ -16,4 +16,7 @@
 	- If requirements.txt file present, run `pip install -r requirements.txt`
 
 * Start and control flask app
-	* Execute app.py file using `python3 app.py` or `./app.py`
+	* Execute app.py file using `python3 app.py` or `./app.py` or `flask run`
+	* `flask shell` can be used to call an interactive python interpreter
+	  configured with all flask dependencies imported before hand
+
