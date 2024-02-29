@@ -30,8 +30,8 @@ def refresh_expiring_jwts(response):
     try:
         exp_time = get_jwt()["exp"]
         present_time = datetime.utcnow()
-        target_ref_time = datetime.timestamp(present_time + timedelta(minutes=10))
-        if target_ref_time > exp_time:
+        target_time = datetime.timestamp(present_time + timedelta(minutes=10))
+        if target_time > exp_time:
             access_token = create_access_token(identity=get_jwt_identity())
             set_access_cookies(response, access_token)
         return response
@@ -88,7 +88,7 @@ def login():
         password = request.form.get("password", None)
 
         if not email or not password:
-            return jsonify(msg="No field can be empty"), 401
+            return jsonify(msg="No field can be empty"), 400
 
         user = User.query.filter_by(email=email).first()
         if user and user.check_password_hash(password):
@@ -97,7 +97,7 @@ def login():
             set_access_cookies(response, access_token)
             return response, 200
         else:
-            return jsonify(msg="Invalid email or password"), 401
+            return jsonify(msg="Invalid email or password"), 400
 
     else:
         return jsonify(msg="Enter account's email and password to login"), 200
@@ -119,17 +119,17 @@ def profile():
     user_posts = current_user.posts
     posts = []
     for post in user_posts:
-        posts.append(
-                {
+        posts.append({
             "title": post.title,
             "author": f"{post.author.firstname} {post.author.lastname}",
             "category": post.category,
             "date posted": post.date_posted.rsplit(":", maxsplit=1)[0],
             "content": post.content
-            }
-        )
+        })
+
     if posts:
         response["posts"] = posts
+
     return jsonify(response), 200
 
 
@@ -140,6 +140,7 @@ def logout():
 
     response = jsonify({"msg": "Logout successful"})
     unset_jwt_cookies(response)
+
     return response, 200
 
 
@@ -151,14 +152,17 @@ def unregister():
     user = current_user
     response = jsonify(msg="Account deleted succesfully")
     unset_jwt_cookies(response)
-    user_posts = user.posts
+
     # Delete User's posts first before deleting user
+    user_posts = user.posts
     for post in user_posts:
         db.session.delete(post)
+
     db.session.delete(user)
     db.session.commit()
 
     return response, 200
+
 
 @app.route('/article/<string:title>')
 def article(title):
@@ -171,7 +175,8 @@ def article(title):
         "category": get_post.category,
         "date posted": get_post.date_posted.rsplit(":", maxsplit=1)[0],
         "content": get_post.content
-        }
+    }
+
     return response, 200
 
 
@@ -181,22 +186,23 @@ def add_article():
     """ Receives information and creates new post in database """
 
     if current_user.role != "Admin":
-        abort(403)
+        abort(403, msg="This account cannot create a post")
 
     title = request.form.get("title", None)
     content = request.form.get("content", None)
     category = request.form.get("category", None)
 
     if not title or not content or not category:
-        return jsonify(msg="No field can be empty"), 401
+        return jsonify(msg="No field can be empty"), 400
 
     if Post.query.filter_by(title=title).one_or_none():
         return jsonify(msg="The title for this post is already taken"), 400
 
     post = Post(title=title, content=content, category=category,
-            admin_id=current_user.id)
+                admin_id=current_user.id)
     db.session.add(post)
     db.session.commit()
+
     # Redirect to same route or different route upon success
     return jsonify(msg="Post added successfully"), 200
 
@@ -204,10 +210,50 @@ def add_article():
 @app.route('/article/<string:title>/delete', methods=['POST'])
 @jwt_required()
 def delete_article(title):
+    """ Delete a post by a user from the database """
+
     post = Post.query.filter_by(title=title).first_or_404()
+
     if post.author != current_user:
-        abort(403)
+        abort(403, msg="This account cannot delete this post")
+
     db.session.delete(post)
     db.session.commit()
 
     return jsonify(msg="Post deleted successfully"), 200
+
+
+@app.route('/search/<string:search_string>')
+def search_article(search_string):
+    """ Searches for a Post's information by title or category """
+
+    # Check if the search string matches any post title
+    post_by_title = Post.query.filter(Post.title.like('%'
+                                      + search_string + '%')).all()
+
+    # Check if the search string matches any post category
+    post_by_category = Post.query.filter(Post.category.like('%'
+                                         + search_string + '%')).all()
+
+    # Combine the results from both searches as a set to eliminate duplicates
+    search_results = set(post_by_title + post_by_category)
+
+    # If there are no results, return a 404 error
+    if not search_results:
+        abort(404, description=f"No articles found for '{search_string}'")
+
+    # Create a response object that contains the search results
+    response = {
+        "search_string": search_string,
+        "results": [
+            {
+                "title": post.title,
+                "author": f"{post.author.firstname} {post.author.lastname}",
+                "category": post.category,
+                "date posted": post.date_posted.rsplit(":", maxsplit=1)[0],
+                "content": post.content
+            } for post in search_results
+        ]
+    }
+
+    return jsonify(response), 200
