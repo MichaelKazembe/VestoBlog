@@ -13,8 +13,8 @@ const Contact = () => {
             <h3>Contact Information</h3>
             <ul>
                 <li>Email: info@vestoblog.com</li>
-                <li>Phone: +1-234-567-890</li>
-                <li>Address: 123 Main Street, City, Country</li>
+                <li>Phone: +265994236798</li>
+                <li>Address: 123 Main Street, Lagos, Malawi</li>
             </ul>
             <h3>Send Us a Message</h3>
             <form>
