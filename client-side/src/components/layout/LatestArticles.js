@@ -5,9 +5,9 @@ import { Container, Card, Row, Col, Button} from 'react-bootstrap';
 const LatestArticles = () => {
   return (
     <Container>
-      <Row className="my-5 px-5 text-center">
+      <Row className="my-5 px-5">
         <Col>
-          <h4>Latest Articles</h4>
+          <h2>Latest Articles</h2>
           <hr/>
         </Col>
       </Row>
