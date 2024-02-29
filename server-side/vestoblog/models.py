@@ -34,7 +34,6 @@ class User(db.Model):
         })
 
 
-
 class Post(db.Model):
     """ Model to create table/schema that'll hold a Posts information """
     id = db.Column(db.Integer, primary_key=True)
@@ -44,9 +43,7 @@ class Post(db.Model):
                             default=datetime.utcnow)
     category = db.Column(db.String(60), nullable=False, index=True)
     admin_id = db.Column(db.Integer, db.ForeignKey('user.id'),
-                        nullable=False, index=True)
-
-
+                         nullable=False, index=True)
 
     def __repr__(self):
         return str({

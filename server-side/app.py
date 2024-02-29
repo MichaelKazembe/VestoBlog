@@ -9,5 +9,6 @@ def make_shell_context():
     """ Function to define names for imported modules to flask shell """
     return {'db': db, 'User': User, 'Post': Post}
 
-if __name__=="__main__":
+
+if __name__ == "__main__":
     app.run(debug=True)
