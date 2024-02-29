@@ -2,6 +2,9 @@ import React from 'react';
 import { ListGroup } from 'react-bootstrap';
 
 function Categories({ categories }) {
+    if (!categories || categories.length === 0) {
+        return <p>No categories found.</p>;
+    }
   return (
     <div>
       <h2>Categories</h2>

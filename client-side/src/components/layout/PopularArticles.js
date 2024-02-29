@@ -7,6 +7,11 @@ function PopularArticles({ articles }) {
     'title': 'Invest Wisely',
     'content': 'dummy text dummy text'
   ]
+    
+  if (!articles || articles.length === 0) {
+    return <p>No articles found.</p>;
+  }
+  
   return (
     <div>
       <h2>Popular Articles</h2>
