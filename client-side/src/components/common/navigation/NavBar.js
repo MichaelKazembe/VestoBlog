@@ -27,10 +27,10 @@ const NavBar = () => {
                 </Nav.Link>
             </Nav>
             <Nav className="ml-auto">
-                <Nav.Link as={NavLink} to="/login" ClassName={styles.navLink}>
+                <Nav.Link as={NavLink} to="/loginPage" ClassName={styles.navLink}>
                 <OutlinePrimaryButton>Login</OutlinePrimaryButton>
                 </Nav.Link>
-                <Nav.Link as={NavLink} to="/register" ClassName={styles.navLink}>
+                <Nav.Link as={NavLink} to="/registerPage" ClassName={styles.navLink}>
                 <PrimaryButton>Register</PrimaryButton>
                 </Nav.Link>
             </Nav>
