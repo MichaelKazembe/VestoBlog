@@ -2,7 +2,7 @@
 """ Defines routes and view functions for the vestoblog app API requests"""
 from vestoblog import app, db, jwt
 from flask import request, jsonify, abort
-from vestoblog.models import User, Post
+from vestoblog.models import User, Post, Comment
 from flask_jwt_extended import create_access_token, set_access_cookies, get_jwt
 from flask_jwt_extended import jwt_required, verify_jwt_in_request, current_user
 from flask_jwt_extended import get_jwt_identity, unset_jwt_cookies
@@ -153,6 +153,11 @@ def unregister():
     response = jsonify(msg="Account deleted succesfully")
     unset_jwt_cookies(response)
 
+    # Delete User's comments to a post first
+    post_comments = user.comments
+    for comment in post_comments:
+        db.session.delete(comment)
+
     # Delete User's posts first before deleting user
     user_posts = user.posts
     for post in user_posts:
@@ -217,6 +222,11 @@ def delete_article(title):
     if post.author != current_user:
         abort(403, msg="This account cannot delete this post")
 
+    # Delete comments to a post first
+    post_comments = post.comments
+    for comment in post_comments:
+        db.session.delete(comment)
+
     db.session.delete(post)
     db.session.commit()
 
@@ -257,3 +267,23 @@ def search_article(search_string):
     }
 
     return jsonify(response), 200
+
+
+@app.route('/article/<string:title>/comment', methods=['POST'])
+@jwt_required()
+def comment_on_article(title):
+    """ Register a comment from a user on an article """
+
+    post = Post.query.filter_by(title=title).first_or_404()
+
+    content = request.form.get("content", None)
+    if not content:
+        return jsonify(msg="Comment cannot be empty"), 400
+
+    comment = Comment(content=content, user_id=current_user.id,
+                      post_id=post.id)
+
+    db.session.add(comment)
+    db.session.commit()
+
+    return jsonify(msg="Comment added succesfully")

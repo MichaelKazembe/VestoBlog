@@ -16,6 +16,7 @@ class User(db.Model):
     role = db.Column(db.Enum("Admin", 'Regular'), nullable=False,
                      default='Regular')
     posts = db.relationship('Post', backref='author', lazy=True)
+    comments = db.relationship('Comment', backref='commenter', lazy=True)
 
     def create_password_hash(self, password):
         """ Create a hash for the user's password """
@@ -44,6 +45,7 @@ class Post(db.Model):
     category = db.Column(db.String(60), nullable=False, index=True)
     admin_id = db.Column(db.Integer, db.ForeignKey('user.id'),
                          nullable=False, index=True)
+    comments = db.relationship('Comment', backref='post', lazy=True)
 
     def __repr__(self):
         return str({
@@ -52,4 +54,25 @@ class Post(db.Model):
             "category": f'{self.category}',
             "author": f'{self.author.email}',
             "id": f'{self.id}'
+        })
+
+
+class Comment(db.Model):
+    """ Model that defines a comment table """
+
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.String(200), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'),
+                         nullable=False, index=True)
+    post_id = db.Column(db.Integer, db.ForeignKey('post.id'),
+                         nullable=False, index=True)
+    date_posted = db.Column(db.String(30), nullable=False,
+                            default=datetime.utcnow)
+
+    def __repr__(self):
+        return str ({
+            "content": f'{self.content}',
+            "commenter id": f'{self.user_id}',
+            "post id": f'{self.post_id}',
+            "date-time": f'{self.date_posted}'
         })
