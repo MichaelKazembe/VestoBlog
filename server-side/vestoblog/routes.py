@@ -2,7 +2,7 @@
 """ Defines routes and view functions for the vestoblog app API requests"""
 from vestoblog import app, db, jwt
 from flask import request, jsonify, abort
-from vestoblog.models import User, Post
+from vestoblog.models import User, Post, Favorites
 from flask_jwt_extended import create_access_token, set_access_cookies, get_jwt
 from flask_jwt_extended import jwt_required, verify_jwt_in_request, current_user
 from flask_jwt_extended import get_jwt_identity, unset_jwt_cookies
@@ -241,3 +241,65 @@ def search_article(search_string):
         }
 
     return jsonify(response), 200
+
+
+@app.route('/article/<string:title>/favorite', methods=['POST'])
+@jwt_required()
+def add_favorite(title):
+    """ Allows a user to favourite a post """
+
+    post = Post.query.filter_by(title=title).first_or_404()
+    current_user_id = current_user.id
+
+    #Check if the user has already favourited the post
+    if is_favorited(post.id):
+        return jsonify({'msg': 'This post is already favorited'}), 400
+
+    favorite = Favorite(user_id=current_user_id, post.id)
+    db.session.add(favorite)
+    db.session.commit()
+
+    return jsonify({"msg": "Post favorited successfully"}), 200
+
+
+@app.route('/favorites', methods=['GET'])
+@jwt_required()
+def get_favorites():
+    """ Retrieves a list of all favorited articles for the current user """
+    current_user_id = current_user.id
+    favorite_posts = Favorite.query.filter_by(user_id=current_user_id).all()
+    # If there are no favourited articles, return a 204 No Content response
+    if not favorite_posts:
+        return jsonify([]), 204
+
+    # Create a list of favourited article information
+    favorite_articles = []
+    for favorite_post in favorite_posts:
+        post = Post.query.get(favorite_post.post_id)
+        favorite_articles.append({
+            "title": post.title,
+            "author": f"{post.author.firstname} {post.author.lastname}",
+            "category": post.category,
+            "date posted": post.date_posted.rsplit(":", maxsplit=1)[0],
+            "content": post.content
+            })
+        return jsonify(favorite_articles), 200
+
+
+@app.route('/article/<string:title>/unfavorite', methods=['POST'])
+@jwt_required()
+def unfavorite_article(title):
+    """ Allows a user to unfavorite a post """
+
+    post = Post.query.filter_by(title=title).first_or_404()
+    current_user_id = current_user.id
+
+    # Check if the user has favourited the post
+    if not is_favorited(post.id):
+        return jsonify({'msg': 'This post is not favorited'}), 400
+
+    favorite = Favorite.query.filter_by(user_id=current_user_id, post_id=post.id).first()
+    db.session.delete(favorite)
+    db.session.commit()
+
+    return jsonify({'msg': 'Post unfavorited successfully'}), 200

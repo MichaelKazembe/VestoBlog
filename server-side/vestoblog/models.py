@@ -16,6 +16,7 @@ class User(db.Model):
     role = db.Column(db.Enum("Admin", 'Regular'), nullable=False,
                              default='Regular')
     posts = db.relationship('Post', backref='author', lazy=True)
+    favorites = db.relationship('Post', secondary=favorites, backref=db.backref('favorited_by', lazy='dynamic'))
 
     def create_password_hash(self, password):
         """ Create a hash for the user's password """
@@ -43,6 +44,7 @@ class Post(db.Model):
                             default=datetime.utcnow)
     category = db.Column(db.String(60), nullable=False, index=True)
     admin_id = db.Column(db.Integer, db.ForeignKey('user.id'),                                                                                   nullable=False, index=True)
+    favorites = db.relationship('User', secondary=favorites, backref=db.backref('favorited_posts', lazy='dynamic'))
 
     def __repr__(self):
         return str({
@@ -52,3 +54,20 @@ class Post(db.Model):
             "author": f'{self.author.email}',
             "id": f'{self.id}'
             })
+
+
+class Favorite(db.Model):
+    id = db.Column(dbInteger, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
+
+    def __repr__(self):
+        return str({
+            "user_id": f'{self.user_id}',
+            "post_id": f'{self.post_id}'
+            })
+
+    def is_favorited(post.id):
+        """ checks if a post is favorited"""
+        return Favorite.query.filter_by(user_id, post_id).exists()
+
