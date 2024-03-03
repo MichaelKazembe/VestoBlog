@@ -2,8 +2,8 @@
     background-size: cover;
     background-position: center;
     background-image: url('../../img/Hero.jpg');
+    border-radius: 5px;
     height: 400px;
-    color: Black;
     text-align: start;
     display: flex;
     align-items: center;

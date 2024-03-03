@@ -1,10 +1,11 @@
-// //App.js
+//App.js
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import routes from './routes/Routes';
 import NavBar from './components/common/navigation/NavBar';
 import Footer from './components/common/navigation/Footer';
 import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 function App() {
   return (

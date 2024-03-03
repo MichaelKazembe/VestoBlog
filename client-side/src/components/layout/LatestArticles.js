@@ -5,12 +5,15 @@ import { Container, Card, Row, Col, Button} from 'react-bootstrap';
 const LatestArticles = () => {
   return (
     <Container>
-      <Row className="my-5 px-5">
-        <Col>
-          <h2>Latest Articles</h2>
-          <hr/>
-        </Col>
-      </Row>
+      <Container>
+        <Row className="my-5 justify-content-md-center">
+          <Col md={10} lg={8} xl={7} xxl={6}>
+            <h3 className="fs-6 text-secondary mb-2 text-uppercase text-center">Latest Articles</h3>
+            <h2 className="display-6 mb-4 mb-md-5 text-center fs-8"> Here is the latest articles from Business, Finance and Stock Markets.</h2>
+            <hr className="w-50 mx-auto mb-5 mb-xl-9 border-dark-subtle" />
+          </Col>
+        </Row>
+      </Container>
       {/* Article Cards */}
       <Row className="my-5 px-5">
         <Col>
