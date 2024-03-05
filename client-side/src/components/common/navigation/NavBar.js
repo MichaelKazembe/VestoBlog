@@ -10,7 +10,7 @@ const NavBar = () => {
         <Navbar bg="light" expand="lg" className={styles.navbar}>
         <Container className={styles.navbarContainer}>
             <Navbar.Brand as={NavLink} to="/" className='Brand-name'><h4>VestoBlog</h4></Navbar.Brand>
-            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Toggle aria-controls="basic-navbar-nav"/>
             <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
                 <Nav.Link as={NavLink} to="/" exact ClassName={styles.navLink}>
@@ -27,10 +27,10 @@ const NavBar = () => {
                 </Nav.Link>
             </Nav>
             <Nav className="ml-auto">
-                <Nav.Link as={NavLink} to="/login" ClassName={styles.navLink}>
+                <Nav.Link as={NavLink} to="/loginPage" ClassName={styles.navLink}>
                 <OutlinePrimaryButton>Login</OutlinePrimaryButton>
                 </Nav.Link>
-                <Nav.Link as={NavLink} to="/register" ClassName={styles.navLink}>
+                <Nav.Link as={NavLink} to="/registerPage" ClassName={styles.navLink}>
                 <PrimaryButton>Register</PrimaryButton>
                 </Nav.Link>
             </Nav>

@@ -12,7 +12,7 @@ class Config(object):
     """ Gets or sets values from env variables for flask app configuration"""
 
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'database.db')
-                            # os.environ.get('DATABASE_URL')
+    # os.environ.get('DATABASE_URL')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     JWT_TOKEN_LOCATION = ['cookies']
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(hours=1)

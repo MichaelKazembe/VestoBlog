@@ -9,7 +9,7 @@ const HeroSection = () => {
             <Container>
                 <div className='Hero-text-box'>
                     <Row>
-                        <Col md={6}>
+                        <Col md={6} xl={8}>
                             <h1>Welcome to VestoBlog</h1>
                             <p>For Latest News & Tips About Finance, Investments</p>
                             <PrimaryButton>Learn More</PrimaryButton>
@@ -18,7 +18,7 @@ const HeroSection = () => {
                 </div>
             </Container>
         </div>
-    );
+    );   
 };
 
 export default HeroSection;
