@@ -6,6 +6,7 @@ import Categories from '../layout/Categories';
 import PopularArticles from '../layout/Categories';
 
 const Home = () => {
+
     return (
         <div>
             <HeroSection />

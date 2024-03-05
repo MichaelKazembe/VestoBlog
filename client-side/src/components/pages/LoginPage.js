@@ -22,22 +22,22 @@ export default function LoginPage() {
                     "password": password
                 }),
             })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! Status: ${response.status}`);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    console.log(data);
-                    navigate("/");
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    if (error.response && error.response.status === 401) {
-                        alert("Invalid credentials");
-                    }
-                });
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log(data);
+                navigate("/");
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                if (error.response && error.response.status === 401) {
+                    alert("Invalid credentials");
+                }
+            });
         }
     }
 
