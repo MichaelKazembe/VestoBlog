@@ -2,15 +2,15 @@
 import React, { useState, useEffect } from "react";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-import axios from "axios";
-import ReactMarkdownEditorLite from "react-markdown-editor-lite";
-import ReactMarkdown from "react-markdown";
+//import Form from "react-bootstrap/Form";
+//import axios from "axios";
+//import ReactMarkdownEditorLite from "react-markdown-editor-lite";
+//import ReactMarkdown from "react-markdown";
 
 const Profile = () => {
 //  const [posts, setPosts] = useState([]);
-  const [newPostTitle, setNewPostTitle] = useState("");
-  const [newPostContent, setNewPostContent] = useState("");
+//  const [newPostTitle, setNewPostTitle] = useState("");
+//  const [newPostContent, setNewPostContent] = useState("");
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
 //  const renderPosts = [];
@@ -32,12 +32,15 @@ const Profile = () => {
     // Fetch user's profile and written posts from the API
     const fetchUserProfile = async () => {
       try {
-	    const response = await fetch("/api/profile");
+	    const response = await fetch("/api/profile/");
+		// But using axios in this two ways failed to fetch user information
+		//const response = await axios.get("/api/profile/");
+		//const response = await axios({ method: "GET", url: "/api/profile/" });
 	    if (!response.ok) {
-		  throw new Error("Failed to fecth profile information");
+		  throw new Error("Failed to fecth profile information, Please Log in");
 	    }
-	    const res = await response.json();
-        setUser(res);
+	    const data = await response.json();
+        setUser(data);
       } catch (error) {
           setError(error.message);
       }
@@ -62,16 +65,16 @@ const Profile = () => {
 //    );
 //  }
 
-  const handleDelete = async (id) => {
+//  const handleDelete = async (id) => {
 //    try {
 //      await axios.delete(`/articles/${id}`);
 //      setPosts(posts.filter((post) => post.id !== id));
 //    } catch (error) {
 //      console.error("Failed to delete post:", error.response.data);
 //    }
-  };
+//  };
 
-  const handleNewPostSubmit = async (e) => {
+//  const handleNewPostSubmit = async (e) => {
 //    e.preventDefault();
 //    try {
 //      const response = await axios.post("/articles", {
@@ -85,7 +88,7 @@ const Profile = () => {
 //    } catch (error) {
 //      console.error("Failed to create new post:", error.response.data);
 //    }
-  };
+//  };
 
   const handleEditProfile = async () => {
     // Implement editing user profile logic
