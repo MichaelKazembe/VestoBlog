@@ -78,11 +78,14 @@ def login():
 
     # Checks if a user accessing the route through a GET request
     # is already logged in
-    if request.method == "GET":
-        if verify_jwt_in_request(optional=True):
-            return jsonify(msg="Already logged In"), 200
+    #if request.method == "GET":
+    #    if verify_jwt_in_request(optional=True):
+    #        return jsonify(msg="Already logged In"), 200
+    #
+    #    else:
+    #        return jsonify(msg="Enter account's email and password to login"), 200
 
-    elif request.method == "POST":
+    if request.method == "POST":
         email = request.json.get("email", None)
         password = request.json.get("password", None)
 
@@ -97,9 +100,6 @@ def login():
             return response, 200
         else:
             return jsonify(msg="Invalid email or password"), 400
-
-    else:
-        return jsonify(msg="Enter account's email and password to login"), 200
 
 
 @app.route('/api/profile/')

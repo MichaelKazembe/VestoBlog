@@ -1,10 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
+
+	//check for csrf_token cookie and redirect to home if present
+	//prevents logged in user from accessing loginpage again
+	useEffect(() => {
+		const checkLoggedIn = () => {
+			function getCookie(name) {
+				var value = "; " + document.cookie;
+				var parts = value.split("; " + name + "=");
+				if (parts.length === 2) return parts.pop().split(";").shift();
+			}
+
+			if (getCookie('csrf_access_token')) {
+				navigate("/");
+				alert("You are already logged in");
+			}
+		}
+
+		checkLoggedIn();
+	}, [navigate]);
 
     const logInUser = () => {
         if (email.length === 0) {

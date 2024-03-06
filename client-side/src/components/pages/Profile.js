@@ -30,8 +30,12 @@ const Profile = () => {
     const fetchUserProfile = async () => {
       try {
         const response = await fetch("/api/profile/");
+		// Using axios in this two ways failed to fetch user information
+		//const response = await axios.get("/api/profile/");
+		//const response = await axios({ method: "GET", url: "/api/profile/" });
         if (!response.ok) {
-		  throw new Error("Failed to fecth profile information");
+		  throw new Error("Failed to fecth profile information, " +
+						  "Please make sure you are logged in");
 	    }
 		const data = await response.json();
 		setUser(data);
