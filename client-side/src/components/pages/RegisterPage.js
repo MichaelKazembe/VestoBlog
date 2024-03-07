@@ -15,7 +15,7 @@ export default function RegisterPage() {
             return;
         }
 
-        fetch('/register', {
+        fetch('/api/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -35,7 +35,6 @@ export default function RegisterPage() {
         })
         .then(data => {
             console.log(data);
-            localStorage.setItem('access_token', data.access_token);
             navigate("/");
         })
         .catch(error => {

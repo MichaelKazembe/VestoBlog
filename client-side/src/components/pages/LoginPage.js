@@ -1,10 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
+
+	//check everytime for csrf_token cookie and redirects to homepage if present
+	//prevents a logged in user from accessing loginpage again
+	useEffect(() => {
+		const checkLoggedIn = () => {
+			function getCookie(name) {
+				var value = "; " + document.cookie;
+				var parts = value.split("; " + name + "=");
+				if (parts.length === 2) return parts.pop().split(";").shift();
+			}
+
+			if (getCookie('csrf_access_token')) {
+				alert("You are already logged in");
+				navigate("/");
+			}
+		}
+
+		checkLoggedIn();
+	});
 
     const logInUser = () => {
         if (email.length === 0) {
@@ -22,22 +41,22 @@ export default function LoginPage() {
                     "password": password
                 }),
             })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! Status: ${response.status}`);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    console.log(data);
-                    navigate("/");
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    if (error.response && error.response.status === 401) {
-                        alert("Invalid credentials");
-                    }
-                });
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log(data);
+                navigate("/");
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                if (error.response && error.response.status === 401) {
+                    alert("Invalid credentials");
+                }
+            });
         }
     }
 

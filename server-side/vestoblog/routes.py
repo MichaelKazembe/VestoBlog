@@ -40,22 +40,34 @@ def refresh_expiring_jwts(response):
         return response
 
 
-@app.route('/')
-@app.route('/home')
+@app.route('/api/home')
 def home():
     """ View function for apps Home Page"""
-    return "<h1>Welcome to Vestoblog</h1>"
-    # return render_template("home.html")
+
+    posts = Post.query.order_by(Post.date_posted.desc()).all()
+    response = {
+        "posts": [
+            {
+                "title": post.title,
+                "author": f"{post.author.firstname} {post.author.lastname}",
+                "category": post.category,
+                "date posted": post.date_posted.rsplit(":", maxsplit=1)[0],
+                "content": post.content
+            } for post in posts
+        ]
+    }
+
+    return response
 
 
-@app.route('/register', methods=["POST"])
+@app.route('/api/register', methods=["POST"])
 def register():
     """ Registers a new user and logs account in upon success """
 
-    firstname = request.form.get("firstname", None)
-    lastname = request.form.get("lastname", None)
-    email = request.form.get("email", None)
-    password = request.form.get('password', None)
+    firstname = request.json.get("firstname", None)
+    lastname = request.json.get("lastname", None)
+    email = request.json.get("email", None)
+    password = request.json.get('password', None)
 
     if (not firstname) or (not lastname) or (not email) or (not password):
         return jsonify(msg="No field can be empty"), 400
@@ -74,21 +86,24 @@ def register():
     return response, 200
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/api/login', methods=['GET', 'POST'])
 def login():
     """ Logs in a user account """
 
     # Checks if a user accessing the route through a GET request
     # is already logged in
-    if verify_jwt_in_request(optional=True):
-        return jsonify(msg="Already logged In"), 200
+    #if request.method == "GET":
+    #    if verify_jwt_in_request(optional=True):
+    #        return jsonify(msg="Already logged In"), 200
+    #    else:
+    #        return jsonify(msg="Enter account's email and password to login"), 200
 
-    elif request.method == "POST":
-        email = request.form.get("email", None)
-        password = request.form.get("password", None)
+    if request.method == "POST":
+        email = request.json.get("email", None)
+        password = request.json.get("password", None)
 
         if not email or not password:
-            return jsonify(msg="No field can be empty"), 400
+            return jsonify(msg="No field can be empty"), 401
 
         user = User.query.filter_by(email=email).first()
         if user and user.check_password_hash(password):
@@ -97,13 +112,10 @@ def login():
             set_access_cookies(response, access_token)
             return response, 200
         else:
-            return jsonify(msg="Invalid email or password"), 400
-
-    else:
-        return jsonify(msg="Enter account's email and password to login"), 200
+            return jsonify(msg="Invalid email or password"), 401
 
 
-@app.route('/profile/')
+@app.route('/api/profile/')
 @jwt_required()
 def profile():
     """ Sends profile information of current logged in user """
@@ -133,7 +145,7 @@ def profile():
     return jsonify(response), 200
 
 
-@app.route('/logout', methods=['POST'])
+@app.route('/api/logout', methods=['POST'])
 @jwt_required()
 def logout():
     """ Logs out user account """
@@ -144,7 +156,7 @@ def logout():
     return response, 200
 
 
-@app.route('/unregister', methods=["POST"])
+@app.route('/api/unregister', methods=["POST"])
 @jwt_required()
 def unregister():
     """ Deletes a user's account from the databse """
@@ -164,7 +176,7 @@ def unregister():
     return response, 200
 
 
-@app.route('/article/<string:title>')
+@app.route('/api/article/<string:title>')
 def article(title):
     """ Sends a Post's information """
 
@@ -180,7 +192,7 @@ def article(title):
     return response, 200
 
 
-@app.route('/article/add', methods=['POST'])
+@app.route('/api/article/add', methods=['POST'])
 @jwt_required()
 def add_article():
     """ Receives information and creates new post in database """
@@ -207,7 +219,7 @@ def add_article():
     return jsonify(msg="Post added successfully"), 200
 
 
-@app.route('/article/<string:title>/delete', methods=['POST'])
+@app.route('/api/article/<string:title>/delete', methods=['POST'])
 @jwt_required()
 def delete_article(title):
     """ Delete a post by a user from the database """
@@ -223,7 +235,7 @@ def delete_article(title):
     return jsonify(msg="Post deleted successfully"), 200
 
 
-@app.route('/search/<string:search_string>')
+@app.route('/api/search/<string:search_string>')
 def search_article(search_string):
     """ Searches for a Post's information by title or category """
 
