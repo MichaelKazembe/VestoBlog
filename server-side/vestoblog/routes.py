@@ -43,8 +43,21 @@ def refresh_expiring_jwts(response):
 @app.route('/api/home')
 def home():
     """ View function for apps Home Page"""
-    return {"msg": "Welcome to Vestoblog Application"}
-    # return render_template("home.html")
+
+    posts = Post.query.order_by(Post.date_posted.desc()).all()
+    response = {
+        "posts": [
+            {
+                "title": post.title,
+                "author": f"{post.author.firstname} {post.author.lastname}",
+                "category": post.category,
+                "date posted": post.date_posted.rsplit(":", maxsplit=1)[0],
+                "content": post.content
+            } for post in posts
+        ]
+    }
+
+    return response
 
 
 @app.route('/api/register', methods=["POST"])
@@ -90,7 +103,7 @@ def login():
         password = request.json.get("password", None)
 
         if not email or not password:
-            return jsonify(msg="No field can be empty"), 400
+            return jsonify(msg="No field can be empty"), 401
 
         user = User.query.filter_by(email=email).first()
         if user and user.check_password_hash(password):
@@ -99,7 +112,7 @@ def login():
             set_access_cookies(response, access_token)
             return response, 200
         else:
-            return jsonify(msg="Invalid email or password"), 400
+            return jsonify(msg="Invalid email or password"), 401
 
 
 @app.route('/api/profile/')

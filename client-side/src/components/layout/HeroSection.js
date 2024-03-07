@@ -18,8 +18,8 @@ const HeroSection = () => {
             <Container>
                 <div className='Hero-text-box'>
                     <Row>
-                        <Col md={6}>
-                            <h1>Welcome to Vestoblog</h1>
+                        <Col md={6} xl={8}>
+                            <h1>Welcome to VestoBlog</h1>
                             <p>For Latest News & Tips About Finance, Investments</p>
                             <PrimaryButton>Learn More</PrimaryButton>
                         </Col>

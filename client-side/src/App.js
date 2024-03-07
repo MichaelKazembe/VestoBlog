@@ -6,6 +6,7 @@ import NavBar from './components/common/navigation/NavBar';
 import Footer from './components/common/navigation/Footer';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+
 function App() {
   return (
     <Router>
