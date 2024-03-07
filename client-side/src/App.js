@@ -11,7 +11,7 @@ function App() {
   return (
     <Router>
       <NavBar />
-      <div className='container mt-4'> 
+      <div className='container mt-4'>
         <Routes>
           {routes.map((route, index) => (
             <Route key={index} path={route.path} element={route.component} />
@@ -72,7 +72,7 @@ export default App
 //       ) : (
 //         <NavBarLoggedOut onLogin={handleLogin} onSignup={handleSignup} />
 //       )}
-//       <div className='container mt-4'> 
+//       <div className='container mt-4'>
 //         <Routes>
 //           {routes.map((route, index) => (
 //             <Route key={index} path={route.path} element={route.component} />

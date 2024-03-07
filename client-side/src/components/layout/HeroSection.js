@@ -4,6 +4,15 @@ import PrimaryButton from '../common/buttons/PrimaryButton';
 import '../../assets/css/layouts/HeroSection.css';
 
 const HeroSection = () => {
+/*
+	const [display, setDisplay] = useState("Welcome to Vestoblog");
+
+	useEffect(() => {
+		fetch("/api/home").then(res => res.json()).then(data => {
+			setDisplay(data.msg);
+		});
+	}, []);
+*/
     return (
         <div className='Hero-section'>
             <Container>
@@ -18,7 +27,7 @@ const HeroSection = () => {
                 </div>
             </Container>
         </div>
-    );   
+    );
 };
 
 export default HeroSection;

@@ -58,7 +58,7 @@ const Login = () => {
           </Button>
         </div>
         <p className="forgot-password text-right">
-          Forgot <a href="#">password?</a>
+          Forgot <a href="/home">password?</a>
         </p>
       </Form>
     </Container>
