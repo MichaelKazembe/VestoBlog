@@ -2,6 +2,7 @@ import React from 'react';
 import { Navbar, Nav, Container } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import OutlinePrimaryButton from '../buttons/OutlinePrimaryButton';
+import PrimaryButton from '../buttons/PrimaryButton';
 import styles from '../../../assets/css/NavBar.module.css';
 
 const NavBarLoggedIn = ({ onLogout, user }) => {
@@ -25,13 +26,21 @@ const NavBarLoggedIn = ({ onLogout, user }) => {
               Contact
             </Nav.Link>
           </Nav>
-          <Nav className="ml-auto">
+          {/* <Nav className="ml-auto">
             <Nav.Link onClick={onLogout} className={styles.navLink}>
               <OutlinePrimaryButton>Logout</OutlinePrimaryButton>
             </Nav.Link>
             <Nav.Link as={NavLink} to="/profile" className={styles.navLink}>
               <img src={user.avatar} alt="User Avatar" style={{ width: '30px', borderRadius: '50%' }} />
-            </Nav.Link>
+            </Nav.Link> */}
+          
+          <Nav className="ml-auto">
+              <Nav.Link as={NavLink} to="/logoutPage" className={styles.navLink}>
+                <PrimaryButton>Login</PrimaryButton>
+              </Nav.Link>
+              <Nav.Link as={NavLink} to="/unregister" className={styles.navLink}>
+                <OutlinePrimaryButton>unregisterRegister</OutlinePrimaryButton>
+              </Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>

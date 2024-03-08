@@ -9,6 +9,7 @@ import Subscribe from '../layout/Subscribe';
 import Services from '../layout/Services';
 
 const Home = () => {
+
     return (
         <div>
             <HeroSection />

@@ -6,8 +6,9 @@ export default function LoginPage() {
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
 
-	//check for csrf_token cookie and redirect to home if present
-	//prevents logged in user from accessing loginpage again
+
+	//check everytime for csrf_token cookie and redirects to homepage if present
+	//prevents a logged in user from accessing loginpage again
 	useEffect(() => {
 		const checkLoggedIn = () => {
 			function getCookie(name) {
@@ -17,13 +18,12 @@ export default function LoginPage() {
 			}
 
 			if (getCookie('csrf_access_token')) {
-				navigate("/");
 				alert("You are already logged in");
+				navigate("/");
 			}
 		}
-
 		checkLoggedIn();
-	}, [navigate]);
+	});
 
     const logInUser = () => {
         if (email.length === 0) {
