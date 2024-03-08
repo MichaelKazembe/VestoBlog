@@ -26,14 +26,14 @@ const NavBarLoggedOut = ({ onLogin, onSignup }) => {
               Contact
             </Nav.Link>
           </Nav>
-          <Nav className="ml-auto">
-            <Nav.Link onClick={onLogin} className={styles.navLink}>
-              <OutlinePrimaryButton>Login</OutlinePrimaryButton>
-            </Nav.Link>
-            <Nav.Link onClick={onSignup} className={styles.navLink}>
-              <PrimaryButton>Register</PrimaryButton>
-            </Nav.Link>
-          </Nav>
+            <Nav className="ml-auto">
+              <Nav.Link as={NavLink} to="/loginPage" className={styles.navLink}>
+                <OutlinePrimaryButton>Login</OutlinePrimaryButton>
+              </Nav.Link>
+              <Nav.Link as={NavLink} to="/registerPage" className={styles.navLink}>
+                <PrimaryButton>Register</PrimaryButton>
+              </Nav.Link>
+            </Nav>
         </Navbar.Collapse>
       </Container>
     </Navbar>
