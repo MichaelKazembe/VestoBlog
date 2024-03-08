@@ -37,7 +37,7 @@ const Profile = () => {
 		//const response = await axios.get("/api/profile/");
 		//const response = await axios({ method: "GET", url: "/api/profile/" });
 	    if (!response.ok) {
-		  throw new Error("Failed to fecth profile information, Please Log in");
+		  throw new Error("Failed to fetch profile information, Please Log in");
 	    }
 	    const data = await response.json();
         setUser(data);
