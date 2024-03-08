@@ -7,7 +7,7 @@ const LogoutPage = () => {
 
     return (
         <div className='text-center p-3'>
-            <p className="mb-4">You have been logged out!</p>
+            <h5 className="mb-4">You have been logged out!</h5>
             <div className="ml-auto">
                 <NavLink to="/" className="btn btn-primary mx-2">
                     <Button variant="primary">Go To Home</Button>
