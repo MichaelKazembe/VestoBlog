@@ -6,6 +6,22 @@ from werkzeug.security import generate_password_hash as gph
 from werkzeug.security import check_password_hash as cph
 
 
+class Favorite(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
+
+    def __repr__(self):
+        return str({
+            "user_id": f'{self.user_id}',
+            "post_id": f'{self.post_id}'
+            })
+
+    def is_favorited(self, user_id, post_id):
+        """ checks if a post is favorited """
+        return Favorite.query.filter_by(user_id, post_id).exists()
+
+
 class User(db.Model):
     """ Model to create table/schema that'll hold a User's information """
     id = db.Column(db.Integer, primary_key=True)
@@ -17,6 +33,9 @@ class User(db.Model):
                      default='Regular')
     posts = db.relationship('Post', backref='author', lazy=True)
     comments = db.relationship('Comment', backref='commenter', lazy=True)
+    favorites = db.relationship('Post', secondary=Favorite,
+                                backref=db.backref('favorited_by',
+                                                   lazy='dynamic'))
 
     def create_password_hash(self, password):
         """ Create a hash for the user's password """
@@ -46,6 +65,9 @@ class Post(db.Model):
     admin_id = db.Column(db.Integer, db.ForeignKey('user.id'),
                          nullable=False, index=True)
     comments = db.relationship('Comment', backref='post', lazy=True)
+    favorites = db.relationship('User', secondary=Favorite,
+                                backref=db.backref('favorited_posts',
+                                                   lazy='dynamic'))
 
     def __repr__(self):
         return str({
@@ -63,9 +85,9 @@ class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.String(200), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'),
-                         nullable=False, index=True)
+                        nullable=False, index=True)
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'),
-                         nullable=False, index=True)
+                        nullable=False, index=True)
     date_posted = db.Column(db.String(30), nullable=False,
                             default=datetime.utcnow)
 
