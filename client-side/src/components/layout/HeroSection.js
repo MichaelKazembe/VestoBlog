@@ -20,7 +20,7 @@ const HeroSection = () => {
                     <Row>
                         <Col md={6} xl={8}>
                             <h1>Welcome to VestoBlog</h1>
-                            <p>For Latest News & Tips About Finance, Investments</p>
+                            <p>For Latest News & Tips About Finance and Investments</p>
                             <Button as={Link} to="/About">Learn More</Button>
                         </Col>
                     </Row>

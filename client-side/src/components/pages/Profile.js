@@ -106,19 +106,25 @@ const Profile = () => {
     <Container className="p-3 my-5">
       <h1>Welcome to Your Profile {user.firstname} {user.lastname}</h1>
       <Button variant="primary" onClick={handleEditProfile}>Edit Profile</Button>
+      <Button variant="danger">Delete Profile</Button>
       <h2>Your Posts</h2>
+      <Button variant= "primary">Your Articles</Button>
 	   <div>
 		{user.posts && (
 		  <div>
             <ul>
               {user.posts.map((post, index) => (
-                <li key={index}>
-                  <h3>{post.title}</h3>
-                  <p>Author: {post.author}</p>
-                  <p>Category: {post.category}</p>
-                  <p>Date Posted: {post.datePosted}</p>
-                  <p>Content: {post.content}</p>
-                </li>
+                <div key={index} className="card" style={{width: "18rem"}}>
+                  <div className="card-body">
+                    <h5 className="card-title">{post.title}</h5>
+                    <h6 className="card-subtitle mb-2 text-muted">Author: {post.author}</h6>
+                    <p className="card-text">Content: {post.content}</p>
+                  </div>
+                  <ul className="list-group list-group-flush">
+                    <li className="list-group-item">Category: {post.category}</li>
+                    <li className="list-group-item">Date Posted: {post.datePosted}</li>
+                  </ul>
+                </div>
               ))}
             </ul>
           </div>
