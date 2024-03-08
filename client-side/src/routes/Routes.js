@@ -10,6 +10,7 @@ import NotFound from '../components/pages/NotFound';
 import LoginPage from '../components/pages/LoginPage';
 import RegisterPage from '../components/pages/RegisterPage';
 import Unregister from '../components/pages/Unregister';
+import LogoutPage from '../components/pages/LogoutPage';
 
 const routes = [
     { path: '/', component: <Home />, exact: true },
@@ -20,6 +21,7 @@ const routes = [
     { path: '/loginPage', component: <LoginPage />},
     { path: '/registerPage', component: <RegisterPage />},
     { path: '/unregister', component: <Unregister />},
+    { path: '/logout', component: <LogoutPage />},
     { path: '*', component: <NotFound /> }
 ];
 

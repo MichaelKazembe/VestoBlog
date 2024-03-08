@@ -9,9 +9,9 @@ const Unregister = () => {
 		<Container className="d-flex align-items-center justify-content-center vh-100">
 		    <Row>
 		        <Col className="text-center">
-		            <h1 className="display-1 fw-bold">404</h1>
+		            <h1 className="display-1 fw-bold">Goodbye!</h1>
 		            <p className="fs-3">
-		              <span className="text-danger">Saddd!</span> To see you leave.
+		              <span className="text-danger">Saddd</span> To see you leave.
 		            </p>
 		            <p className="lead">
 		              We Hope this blog helped you.
