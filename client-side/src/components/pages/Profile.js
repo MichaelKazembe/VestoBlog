@@ -2,137 +2,72 @@
 import React, { useState, useEffect } from "react";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
-//import Form from "react-bootstrap/Form";
-//import axios from "axios";
-//import ReactMarkdownEditorLite from "react-markdown-editor-lite";
-//import ReactMarkdown from "react-markdown";
+import Card from "react-bootstrap/Card";
 
 const Profile = () => {
-//  const [posts, setPosts] = useState([]);
-//  const [newPostTitle, setNewPostTitle] = useState("");
-//  const [newPostContent, setNewPostContent] = useState("");
-  const [user, setUser] = useState(null);
-  const [error, setError] = useState(null);
-//  const renderPosts = [];
+    const [user, setUser] = useState(null);
+    const [error, setError] = useState(null);
 
+    useEffect(() => {
+        const fetchUserProfile = async () => {
+            try {
+                const response = await fetch("/api/profile/");
+                if (!response.ok) {
+                    throw new Error("Failed to fetch profile information, Please Log in");
+                }
+                const data = await response.json();
+                setUser(data);
+            } catch (error) {
+                setError(error.message);
+            }
+        };
 
-	// Fetch user's posts from the API
-//    const fetchPosts = async () => {
-//      try {
-//        const response = await axios.get("/articles");
-//       setPosts(response.data);
-//      } catch (error) {
-//        console.error("Failed to fetch posts:", error.response.data);
-//      }
-//    };
-//    fetchPosts();
+        fetchUserProfile();
+    }, []);
 
-  useEffect(() => {
-
-    // Fetch user's profile and written posts from the API
-    const fetchUserProfile = async () => {
-      try {
-	    const response = await fetch("/api/profile/");
-		// But using axios in this two ways failed to fetch user information
-		//const response = await axios.get("/api/profile/");
-		//const response = await axios({ method: "GET", url: "/api/profile/" });
-	    if (!response.ok) {
-		  throw new Error("Failed to fetch profile information, Please Log in");
-	    }
-	    const data = await response.json();
-        setUser(data);
-      } catch (error) {
-          setError(error.message);
-      }
+    const handleEditProfile = async () => {
+        // Implement editing user profile logic
     };
 
-    fetchUserProfile();
-  }, []);
+    if (error) {
+        return <div>Error: {error}</div>;
+    }
 
-//  for (const post in posts){
-//	renderPosts.push(
-//        <div key={post.id}>
-//          <h3>{post.title}</h3>
-//		  <h2>{post.author}</h2>
-//		  <h2>{post.date_posted}</h2>
-//          <ReactMarkdown>{post.content}</ReactMarkdown>
-//          <Button variant="warning">Edit</Button>{" "}
-//          <Button variant="danger" onClick={() => handleDelete(post.id)}>
-//            Delete
-//          </Button>
-//          <hr />
-//        </div>
-//    );
-//  }
+    if (!user) {
+        return <div>Loading...</div>;
+    }
 
-//  const handleDelete = async (id) => {
-//    try {
-//      await axios.delete(`/articles/${id}`);
-//      setPosts(posts.filter((post) => post.id !== id));
-//    } catch (error) {
-//      console.error("Failed to delete post:", error.response.data);
-//    }
-//  };
-
-//  const handleNewPostSubmit = async (e) => {
-//    e.preventDefault();
-//    try {
-//      const response = await axios.post("/articles", {
-//        title: newPostTitle,
-//        content: newPostContent,
-        // Add any other fields you need for the post
-//      });
-//      setPosts([...posts, response.data]);
-//      setNewPostTitle("");
-//      setNewPostContent("");
-//    } catch (error) {
-//      console.error("Failed to create new post:", error.response.data);
-//    }
-//  };
-
-  const handleEditProfile = async () => {
-    // Implement editing user profile logic
-  };
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
-
-  if (!user) {
-    return <div>Loading...</div>;
-  }
-
-  return (
-    <Container className="p-3 my-5">
-      <h1>Welcome to Your Profile {user.firstname} {user.lastname}</h1>
-      <Button variant="primary" onClick={handleEditProfile}>Edit Profile</Button>
-      <Button variant="danger">Delete Profile</Button>
-      <h2>Your Posts</h2>
-      <Button variant= "primary">Your Articles</Button>
-	   <div>
-		{user.posts && (
-		  <div>
-            <ul>
-              {user.posts.map((post, index) => (
-                <div key={index} className="card" style={{width: "18rem"}}>
-                  <div className="card-body">
-                    <h5 className="card-title">{post.title}</h5>
-                    <h6 className="card-subtitle mb-2 text-muted">Author: {post.author}</h6>
-                    <p className="card-text">Content: {post.content}</p>
-                  </div>
-                  <ul className="list-group list-group-flush">
-                    <li className="list-group-item">Category: {post.category}</li>
-                    <li className="list-group-item">Date Posted: {post.datePosted}</li>
-                  </ul>
-                </div>
-              ))}
-            </ul>
-          </div>
-        )}
-	   </div>
-	  </Container>
+    return (
+        <Container className="p-3 my-5">
+            <h1>Welcome to Your Profile {user.firstname} {user.lastname}</h1>
+            <Button variant="primary mx-2" onClick={handleEditProfile}>Edit Profile</Button>
+            <Button variant="danger mx-2">Delete Profile</Button>
+            <h2>Your Posts</h2>
+            <div>
+                {user.posts && (
+                    <div>
+                        {user.posts.map((post, index) => (
+                            <Card key={index} className="mb-3">
+                                <Card.Body>
+                                    <Card.Title>{post.title}</Card.Title>
+                                    <Card.Subtitle className="mb-2 text-muted">Author: {post.author}</Card.Subtitle>
+                                    <Card.Text>{post.content}</Card.Text>
+                                </Card.Body>
+                                <Card.Footer>
+                                    <small className="text-muted">Category: {post.category}</small><br />
+                                    <small className="text-muted">Date Posted: {post.datePosted}</small>
+                                </Card.Footer>
+                            </Card>
+                        ))}
+                    </div>
+                )}
+            </div>
+        </Container>
     );
 };
+
+export default Profile;
+
 
 //	    <h2>Create New Post</h2>
 //	    <Form onSubmit={handleNewPostSubmit}>
@@ -158,4 +93,3 @@ const Profile = () => {
 //        </Button>
 //      </Form>
 
-export default Profile;
